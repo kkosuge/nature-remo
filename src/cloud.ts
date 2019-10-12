@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
-import { ParsedUrlQueryInput, stringify } from 'querystring'
+import queryString from 'query-string'
 import * as NatureRemo from './interfaces'
 
 export class Cloud {
@@ -289,9 +289,15 @@ export class Cloud {
     return response
   }
 
-  private async _post<T>(path: string, body?: ParsedUrlQueryInput): Promise<T> {
+  private async _post<T>(
+    path: string,
+    body: { [key: string]: any } = {}
+  ): Promise<T> {
     try {
-      const response = await this.instance.post(path, stringify(body))
+      const response = await this.instance.post(
+        path,
+        queryString.stringify(body)
+      )
       return response.data
     } catch (error) {
       if (error.response) {
